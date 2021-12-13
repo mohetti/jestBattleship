@@ -4,15 +4,17 @@
   "description": "game",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --env=jsdom",
     "start": "webpack-dev-server --mode development"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.1",
     "@types/jest": "^27.0.3",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
+    "@types/uniqid": "^5.3.1",
     "css-loader": "^6.5.1",
     "jest": "^27.4.4",
     "style-loader": "^3.3.1",
@@ -25,6 +27,7 @@
   },
   "dependencies": {
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "uniqid": "^5.4.0"
   }
 }
