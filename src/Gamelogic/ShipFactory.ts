@@ -3,11 +3,12 @@ const Ship = (n: number) => {
 
   const hitShip = () => {
     intactParts--;
+    return checkIfSunk();
   };
   const checkIfSunk = () => {
     return intactParts === 0;
   };
-  return { hitShip, checkIfSunk };
+  return { hitShip };
 };
 
 export default Ship;
