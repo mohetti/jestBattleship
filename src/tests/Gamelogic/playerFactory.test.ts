@@ -57,7 +57,7 @@ describe('Testing the Player Factory Function', () => {
     player1.setName('Helmut');
     expect(player1.getName()).toBe('Helmut');
   });
-  xit('Populates abstracted Gameboard with all ships', () => {
+  it('Populates abstracted Gameboard with all ships', () => {
     player1.placeShips(placeShipMock);
     let getBoard = player1.getBoard();
     // bigShip
@@ -75,11 +75,11 @@ describe('Testing the Player Factory Function', () => {
     // tinyShip
     expect(getBoard[9][9]).not.toBe(undefined);
     // empty fields
-    expect(getBoard[6][6]).toBe(undefined);
-    expect(getBoard[6][7]).toBe(undefined);
+    expect(getBoard[6]).toBe(undefined);
+    expect(getBoard[4][6]).toBe(undefined);
   });
 
-  xit('Testing receiveAttack, that executes .hitShip() functions of respective ships. Testing fleetSunk after all functions executed.', () => {
+  xit('Testing receiveAttack, that executes .hitShip() functions of respective ships from ShipFactory. Testing fleetSunk after all functions executed.', () => {
     player1.placeShips(placeShipMock);
 
     expect(player1.receiveAttack([0, 0])).toBeFalsy();
