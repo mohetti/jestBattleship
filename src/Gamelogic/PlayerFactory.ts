@@ -21,7 +21,7 @@ import Ship from './ShipFactory';
 const Player = () => {
   let name: string;
   const board: Board = {};
-  const isFleetSunk: boolean = false;
+  let fleetNumber = 4;
 
   const bigShip = Ship(4);
   const medShip = Ship(3);
@@ -53,11 +53,16 @@ const Player = () => {
   function getBoard() {
     return board;
   }
-  function receiveAttack() {
-    return true;
+  function receiveAttack(tuple: [number, number]) {
+    let isShipSunk = undefined;
+    if (board[tuple[0]] && board[tuple[0]][tuple[1]]) {
+      isShipSunk = board[tuple[0]][tuple[1]]();
+    }
+    isShipSunk && fleetNumber--;
+    return isShipSunk;
   }
   function getIsFleetSunk() {
-    return isFleetSunk;
+    return fleetNumber === 0;
   }
 
   return {

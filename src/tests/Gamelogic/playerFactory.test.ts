@@ -43,7 +43,7 @@ type Props = {
   getName: () => string;
   placeShips: (fleet: Fleet) => void;
   getBoard: () => Board;
-  receiveAttack: (coord: [number, number]) => boolean;
+  receiveAttack: (coord: [number, number]) => boolean | undefined;
   getIsFleetSunk: () => boolean;
 };
 
@@ -79,7 +79,7 @@ describe('Testing the Player Factory Function', () => {
     expect(getBoard[4][6]).toBe(undefined);
   });
 
-  xit('Testing receiveAttack, that executes .hitShip() functions of respective ships from ShipFactory. Testing fleetSunk after all functions executed.', () => {
+  it('Testing receiveAttack => testing hits only. Testing fleetSunk after all .hitShip functions executed.', () => {
     player1.placeShips(placeShipMock);
 
     expect(player1.receiveAttack([0, 0])).toBeFalsy();
@@ -87,7 +87,6 @@ describe('Testing the Player Factory Function', () => {
     expect(player1.receiveAttack([0, 2])).toBeFalsy();
     expect(player1.receiveAttack([0, 3])).toBeTruthy();
     expect(player1.getIsFleetSunk()).toBeFalsy();
-
     expect(player1.receiveAttack([1, 0])).toBeFalsy();
     expect(player1.receiveAttack([2, 0])).toBeFalsy();
     expect(player1.receiveAttack([3, 0])).toBeTruthy();
@@ -95,5 +94,11 @@ describe('Testing the Player Factory Function', () => {
     expect(player1.receiveAttack([4, 5])).toBeTruthy();
     expect(player1.receiveAttack([9, 9])).toBeTruthy();
     expect(player1.getIsFleetSunk()).toBeTruthy();
+  });
+
+  it('Testing receiveAttack => Testing missed shots.', () => {
+    player1.placeShips(placeShipMock);
+    expect(player1.receiveAttack([0, 4])).toBe(undefined);
+    expect(player1.receiveAttack([6, 6])).toBe(undefined);
   });
 });
