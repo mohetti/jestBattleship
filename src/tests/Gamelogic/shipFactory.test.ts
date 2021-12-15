@@ -4,7 +4,7 @@ type Props = {
   hitShip: () => void;
 };
 
-describe.skip('Testing ShipFactory methods', () => {
+describe('Testing ShipFactory methods', () => {
   let bigShip: Props;
   beforeEach(() => {
     bigShip = Ship(4);

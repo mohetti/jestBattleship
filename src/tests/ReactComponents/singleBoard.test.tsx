@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SingleBoard from '../Components/SingleBoard';
+import SingleBoard from '../../Components/SingleBoard';
 
-describe.skip('SingleBoard Component tests', () => {
+describe('SingleBoard Component tests', () => {
   let container: HTMLDivElement;
   beforeEach(() => {
     container = document.createElement('div');
