@@ -1,15 +1,10 @@
 import { randomFleet } from '../../Gamelogic/helpers';
 
 type Fleet = {
-  bigShip: [
-    [number, number],
-    [number, number],
-    [number, number],
-    [number, number]
-  ];
-  medShip: [[number, number], [number, number], [number, number]];
-  smallShip: [[number, number], [number, number]];
-  tinyShip: [[number, number]];
+  bigShip: number[][];
+  medShip: number[][];
+  smallShip: number[][];
+  tinyShip: number[][];
 };
 
 describe('Testing random placement of ships', () => {

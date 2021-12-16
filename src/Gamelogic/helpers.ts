@@ -1,8 +1,11 @@
 function emptyBoardArray() {
-  return [
-    [1, 2],
-    [2, 3],
-  ];
+  let arr = [];
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      arr.push([i, j]);
+    }
+  }
+  return arr;
 }
 
 function getRandomIndex(arrLength: number) {
@@ -18,21 +21,47 @@ function possibleCoords(
   shipCells: number,
   isHorizontal: boolean
 ) {
-  let possible = [startCoord];
+  let possible = [];
   // vorsicht
   if (isHorizontal) {
-    for (let i = startCoord[1]; i < shipCells - 1; i++) {
-      let coord = [startCoord[0], startCoord[1] + 1];
-      possible.push();
+    for (let i = startCoord[1]; i < startCoord[1] + shipCells; i++) {
+      let coord = [startCoord[0], i];
+      possible.push(coord);
     }
   }
+  if (!isHorizontal) {
+    for (let i = startCoord[0]; i < startCoord[0] + shipCells; i++) {
+      let coord = [i, startCoord[1]];
+      possible.push(coord);
+    }
+  }
+  return possible;
+}
+
+function hasNoJump(arr: number[][], isHorizontal: boolean) {
+  if (isHorizontal) {
+    let yCoords = arr.map((x) => x[1]);
+    let isValid = yCoords.reduce((acc: number | boolean, curr, i) => {
+      if (i === 0) return (acc = curr);
+      if (curr - Number(acc) === 1) return (acc = curr);
+      return (acc = false);
+    }, 0);
+    return Boolean(isValid);
+  }
+  let xCoords = arr.map((x) => x[0]);
+  let isValid = xCoords.reduce((acc: number | boolean, curr, i) => {
+    if (i === 0) return (acc = curr);
+    if (curr - Number(acc) === 1) return (acc = curr);
+    return (acc = false);
+  }, 0);
+  return Boolean(isValid);
 }
 
 function finalShipPlacement(
   board: number[][],
   shipCells: number,
   isHorizontal?: boolean
-) {
+): number[][] {
   if (isHorizontal === undefined) isHorizontal = getAxis();
 
   // recursive outcome comese below and before boundary
@@ -43,27 +72,57 @@ function finalShipPlacement(
 
   let randomIndex = getRandomIndex(inboundArr.length);
 
-  let possible = possibleCoords(
+  let possibleArr = possibleCoords(
     inboundArr[randomIndex],
     shipCells,
     isHorizontal
   );
 
-  // *** place ship randomly
-
-  // coordinate-tuples cant be the same or be out of bounce. so this doesnt need to be tested.
-  // but, coordinate-tuples could jump over a coordinate that is not in the array anymore, like: [0,2] [0,4]
-  // *** testing if a jump happened. If no: finalShipPlacement is finished. If jump happened, try again recursevly
+  return hasNoJump(possibleArr, isHorizontal)
+    ? possibleArr
+    : finalShipPlacement(board, shipCells, isHorizontal);
 }
 
 export function randomFleet(board: number[][] = emptyBoardArray()) {
   const emptyBoard = board;
   let randomIndex = getRandomIndex(emptyBoard.length);
-  const tinyShip = emptyBoard[randomIndex];
+  const tinyShip = [emptyBoard[randomIndex]];
   emptyBoard.splice(randomIndex, 1);
 
-  const smallShip = finalShipPlacement(board, 3);
-  // find those coordinates and remove them from emptyBoard. Since they're unique, no deeper logic is needed
+  const smallShip = finalShipPlacement(emptyBoard, 2);
+  smallShip.forEach((val) =>
+    emptyBoard.splice(
+      emptyBoard.indexOf(
+        emptyBoard.find((x) => x[0] === val[0] && x[1] === val[1])!
+      ),
+      1
+    )
+  );
+  const medShip = finalShipPlacement(emptyBoard, 3);
+  medShip.forEach((val) =>
+    emptyBoard.splice(
+      emptyBoard.indexOf(
+        emptyBoard.find((x) => x[0] === val[0] && x[1] === val[1])!
+      ),
+      1
+    )
+  );
+  const bigShip = finalShipPlacement(emptyBoard, 4);
+  bigShip.forEach((val) =>
+    emptyBoard.splice(
+      emptyBoard.indexOf(
+        emptyBoard.find((x) => x[0] === val[0] && x[1] === val[1])!
+      ),
+      1
+    )
+  );
 
-  return { bigShip: [], medShip: [], smallShip: [], tinyShip: [] };
+  let obj = {
+    bigShip: bigShip,
+    medShip: medShip,
+    smallShip: smallShip,
+    tinyShip: tinyShip,
+  };
+
+  return obj;
 }
