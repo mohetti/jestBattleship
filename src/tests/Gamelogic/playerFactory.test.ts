@@ -1,16 +1,5 @@
 import Player from '../../Gamelogic/PlayerFactory';
-
-type Fleet = {
-  bigShip: [
-    [number, number],
-    [number, number],
-    [number, number],
-    [number, number]
-  ];
-  medShip: [[number, number], [number, number], [number, number]];
-  smallShip: [[number, number], [number, number]];
-  tinyShip: [[number, number]];
-};
+import { Fleet, PlayerMethods } from '../../Types/shipTypes';
 
 const placeShipMock: Fleet = {
   bigShip: [
@@ -31,24 +20,8 @@ const placeShipMock: Fleet = {
   tinyShip: [[9, 9]],
 };
 
-interface BoardInnerLayer {
-  [key: number]: () => boolean;
-}
-interface Board {
-  [key: number]: BoardInnerLayer;
-}
-
-type Props = {
-  setName: (input: string) => void;
-  getName: () => string;
-  placeShips: (fleet: Fleet) => void;
-  getBoard: () => Board;
-  receiveAttack: (coord: [number, number]) => boolean | undefined;
-  getIsFleetSunk: () => boolean;
-};
-
 describe('Testing the Player Factory Function', () => {
-  let player1: Props;
+  let player1: PlayerMethods;
   beforeEach(() => {
     player1 = Player();
   });

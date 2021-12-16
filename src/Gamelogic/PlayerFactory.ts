@@ -1,23 +1,6 @@
-interface BoardInnerLayer {
-  [key: number]: () => boolean;
-}
-interface Board {
-  [key: number]: BoardInnerLayer;
-}
-
-type Fleet = {
-  bigShip: [
-    [number, number],
-    [number, number],
-    [number, number],
-    [number, number]
-  ];
-  medShip: [[number, number], [number, number], [number, number]];
-  smallShip: [[number, number], [number, number]];
-  tinyShip: [[number, number]];
-};
-
+import { Board, Fleet } from '../Types/shipTypes';
 import Ship from './ShipFactory';
+
 const Player = () => {
   let name: string;
   const board: Board = {};

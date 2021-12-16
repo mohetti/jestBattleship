@@ -1,11 +1,8 @@
 import Ship from '../../Gamelogic/ShipFactory';
-
-type Props = {
-  hitShip: () => void;
-};
+import { ShipMethods } from '../../Types/shipTypes';
 
 describe('Testing ShipFactory methods', () => {
-  let bigShip: Props;
+  let bigShip: ShipMethods;
   beforeEach(() => {
     bigShip = Ship(4);
   });

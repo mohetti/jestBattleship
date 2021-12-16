@@ -1,11 +1,5 @@
 import { randomFleet } from '../../Gamelogic/helpers';
-
-type Fleet = {
-  bigShip: number[][];
-  medShip: number[][];
-  smallShip: number[][];
-  tinyShip: number[][];
-};
+import { Fleet } from '../../Types/shipTypes';
 
 describe('Testing random placement of ships', () => {
   let fleet: Fleet;

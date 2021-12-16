@@ -56,7 +56,6 @@ function hasNoJump(arr: number[][], isHorizontal: boolean) {
   }, 0);
   return Boolean(isValid);
 }
-
 function finalShipPlacement(
   board: number[][],
   shipCells: number,
