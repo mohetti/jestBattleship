@@ -1,4 +1,4 @@
-import { randomFleet } from '../../Gamelogic/helpers';
+import { randomFleet, hasNoJump } from '../../Gamelogic/helpers';
 import { Fleet } from '../../Types/shipTypes';
 
 describe('Testing random placement of ships', () => {
@@ -17,5 +17,47 @@ describe('Testing random placement of ships', () => {
     expect(fleetKeys).toEqual(
       expect.arrayContaining(['bigShip', 'medShip', 'smallShip', 'tinyShip'])
     );
+  });
+  it('hasNoJump tests, if the possible coords of a ship arent obstructed by another ship. If this would be the case, it returns false', () => {
+    expect(
+      hasNoJump(
+        [
+          [0, 1],
+          [0, 2],
+          [0, 3],
+        ],
+        true
+      )
+    ).toBeTruthy();
+    expect(
+      hasNoJump(
+        [
+          [0, 1],
+          [1, 1],
+          [2, 1],
+        ],
+        false
+      )
+    ).toBeTruthy();
+    expect(
+      hasNoJump(
+        [
+          [0, 1],
+          [0, 1],
+          [0, 3],
+        ],
+        true
+      )
+    ).toBeFalsy();
+    expect(
+      hasNoJump(
+        [
+          [0, 1],
+          [1, 1],
+          [1, 1],
+        ],
+        false
+      )
+    ).toBeFalsy();
   });
 });

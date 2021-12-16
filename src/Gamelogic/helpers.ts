@@ -38,7 +38,8 @@ function possibleCoords(
   return possible;
 }
 
-function hasNoJump(arr: number[][], isHorizontal: boolean) {
+// exported for testing purposes only
+export function hasNoJump(arr: number[][], isHorizontal: boolean) {
   if (isHorizontal) {
     let yCoords = arr.map((x) => x[1]);
     let isValid = yCoords.reduce((acc: number | boolean, curr, i) => {
@@ -63,7 +64,6 @@ function finalShipPlacement(
 ): number[][] {
   if (isHorizontal === undefined) isHorizontal = getAxis();
 
-  // recursive outcome comese below and before boundary
   const boundary = 10 - shipCells;
   const inboundArr = board.filter((x) => {
     return isHorizontal ? x[1] <= boundary : x[0] <= boundary;
