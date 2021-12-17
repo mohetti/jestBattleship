@@ -1,0 +1,10 @@
+.ship > div {
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}

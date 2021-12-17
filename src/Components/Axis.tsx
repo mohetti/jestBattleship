@@ -8,7 +8,7 @@ type Props = {
 function Axis(props: Props) {
   return (
     <React.Fragment>
-      <button onClick={props.toggleAxis}>
+      <button className='button' onClick={props.toggleAxis}>
         {props.isHorizontal ? 'vertical' : 'horizontal'}
       </button>
     </React.Fragment>

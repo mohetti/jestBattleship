@@ -6,7 +6,6 @@
 #root {
   width: 100vw;
   height: 100vh;
-  background: red;
 }
 
 .flex-row {
@@ -25,4 +24,41 @@
 
 .border {
   border: 1px solid black;
+}
+
+.center {
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  width: 150px;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.display-right {
+  justify-content: end;
+}
+
+.mgt {
+  margin-top: 5%;
+}
+
+.mgr {
+  margin-right: 5%;
+}
+.mgl {
+  margin-left: 5%;
+}
+
+.mgb {
+  margin-bottom: 5%;
 }

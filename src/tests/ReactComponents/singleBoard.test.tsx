@@ -15,7 +15,10 @@ describe('SingleBoard Component tests', () => {
   });
 
   it('Renders correctly initially', () => {
-    const boardCells = container.querySelector('.single-board')!.childNodes;
-    expect(boardCells).toHaveLength(100);
+    const boardCells = container.querySelector('.board-container')!.childNodes;
+    expect(boardCells).toHaveLength(10);
+    for (let i = 0; i < 10; i++) {
+      expect(boardCells[i].childNodes).toHaveLength(10);
+    }
   });
 });
