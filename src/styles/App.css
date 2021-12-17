@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+.split-screen {
+  height: 80vh;
+  width: 80vw;
+  display: flex;
+  justify-content: space-around;
+  padding: 10%;
+}
+
+.selector {
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}

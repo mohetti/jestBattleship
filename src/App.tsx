@@ -1,12 +1,15 @@
 import React from 'react';
 import SingleBoard from './Components/SingleBoard';
 import Harbor from './Components/Harbor';
+import './styles/App.css';
 
 function App() {
   return (
     <React.Fragment>
-      <SingleBoard />
-      <Harbor />
+      <div className='split-screen selector'>
+        <SingleBoard />
+        <Harbor />
+      </div>
     </React.Fragment>
   );
 }

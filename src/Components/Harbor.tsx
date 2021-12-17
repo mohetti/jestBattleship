@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import '../styles/harbor.css';
+import Axis from './Axis';
 
 function Harbor() {
+  const [isHorizontal, setIsHorizontal] = useState(true);
+  function toggleAxis() {
+    setIsHorizontal(!isHorizontal);
+  }
   return (
     <div>
       <div className='ship' data-test='big-ship'></div>
