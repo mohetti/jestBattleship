@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../styles/harbor.css';
 import Axis from './Axis';
+import '../styles/single-board.css';
 
 function Harbor() {
   const [isHorizontal, setIsHorizontal] = useState(true);
@@ -8,7 +8,8 @@ function Harbor() {
     setIsHorizontal(!isHorizontal);
   }
   return (
-    <div>
+    <div className='fill-space hghl-yellow'>
+      <Axis isHorizontal={isHorizontal} toggleAxis={toggleAxis} />
       <div className='ship' data-test='big-ship'></div>
       <div className='ship' data-test='med-ship'></div>
       <div className='ship' data-test='small-ship'></div>
@@ -18,3 +19,4 @@ function Harbor() {
 }
 
 export default Harbor;
+//  className='split right'

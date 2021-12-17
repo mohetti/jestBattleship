@@ -1,16 +1,21 @@
 import React from 'react';
+
+// Components import *start
 import SingleBoard from './Components/SingleBoard';
 import Harbor from './Components/Harbor';
-import './styles/App.css';
+// Components import *end
+
+// css imports *start
+import './styles/main.css';
+import './styles/helpers.css';
+// css imports *end
 
 function App() {
   return (
-    <React.Fragment>
-      <div className='split-screen selector'>
-        <SingleBoard />
-        <Harbor />
-      </div>
-    </React.Fragment>
+    <div className='split-screen'>
+      <SingleBoard />
+      <Harbor />
+    </div>
   );
 }
 

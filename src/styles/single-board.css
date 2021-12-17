@@ -1,0 +1,8 @@
+.board-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  min-height: 200px;
+  width: 30vw;
+  height: 30vw;
+}
