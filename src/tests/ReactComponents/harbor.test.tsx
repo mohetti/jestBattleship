@@ -8,7 +8,12 @@ describe('Harbor tests', () => {
   beforeEach(() => {
     container = document.createElement('div');
     document.body.appendChild(container);
-    ReactDOM.render(<Harbor />, container);
+
+    const toggleMock = jest.fn(function () {});
+    ReactDOM.render(
+      <Harbor isHorizontal={true} toggleAxis={toggleMock} />,
+      container
+    );
   });
   afterEach(() => {
     document.body.removeChild(container);

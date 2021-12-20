@@ -7,7 +7,7 @@ describe('SingleBoard Component tests', () => {
   beforeEach(() => {
     container = document.createElement('div');
     document.body.appendChild(container);
-    ReactDOM.render(<SingleBoard />, container);
+    ReactDOM.render(<SingleBoard isHorizontal={true} />, container);
   });
   afterEach(() => {
     document.body.removeChild(container);

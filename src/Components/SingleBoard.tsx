@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import uniqid from 'uniqid';
 import '../styles/single-board.css';
 
+type Props = {
+  isHorizontal: boolean;
+};
+
 type T = {
   bigShip: number[][];
   medShip: number[][];
@@ -16,10 +20,8 @@ enum ShipEnum {
   bigShip,
 }
 
-function SingleBoard() {
+function SingleBoard(props: Props) {
   const [ship, setShip] = useState(4);
-  const [shipType, setShipType] = useState('bigShip');
-  const [isHorizontal, setIsHorizontal] = useState(true);
   const [isHoverable, setIsHoverable] = useState(true);
   const [occupiedCells, setOccupiedCells] = useState<string[]>([]);
   const [hoveredCells, setHoveredCells] = useState<string[]>([]);
@@ -33,15 +35,14 @@ function SingleBoard() {
   const highlightCells = (e: React.MouseEvent) => {
     const target = e.target as HTMLDivElement;
     const dataCoord = target.getAttribute('data-coord');
+    let [x, y] = [...String(target.getAttribute('data-coord'))];
     const hoveredCellsArray = [];
     let isOccupied = false;
 
-    if (isHorizontal) {
-      if (Number(dataCoord![1]) + ship - 1 > 9) {
-        for (let i = 0; i < 10 - Number(dataCoord![1]); i++) {
-          hoveredCellsArray.push(
-            `${dataCoord![0]}${Number(dataCoord![1]) + i}`
-          );
+    if (props.isHorizontal) {
+      if (Number(y) + ship - 1 > 9) {
+        for (let i = 0; i < 10 - Number(y); i++) {
+          hoveredCellsArray.push(`${x}${Number(y) + i}`);
         }
         setIsHoverable(false);
         setHoveredCells(hoveredCellsArray);
@@ -49,64 +50,74 @@ function SingleBoard() {
       }
 
       for (let i = 0; i < ship; i++) {
-        hoveredCellsArray.push(`${dataCoord![0]}${Number(dataCoord![1]) + i}`);
-        if (
-          occupiedCells.indexOf(
-            `${dataCoord![0]}${Number(dataCoord![1]) + i}`
-          ) !== -1
-        ) {
+        hoveredCellsArray.push(`${x}${Number(y) + i}`);
+        if (occupiedCells.indexOf(`${x}${Number(y) + i}`) !== -1) {
           isOccupied = true;
         }
       }
-
-      if (isOccupied) {
-        setHoveredCells(hoveredCellsArray);
-        setIsHoverable(false);
-        return;
-      }
-
-      for (let i = 0; i < ship; i++) {
-        hoveredCellsArray.push(`${dataCoord![0]}${Number(dataCoord![1]) + i}`);
-      }
       setHoveredCells(hoveredCellsArray);
-      setIsHoverable(true);
+      isOccupied ? setIsHoverable(false) : setIsHoverable(true);
       return;
     }
+
+    if (Number(x) + ship - 1 > 9) {
+      for (let i = 0; i < 10 - Number(x); i++) {
+        hoveredCellsArray.push(`${Number(x) + i}${y}`);
+      }
+      setIsHoverable(false);
+      setHoveredCells(hoveredCellsArray);
+      return;
+    }
+
+    for (let i = 0; i < ship; i++) {
+      hoveredCellsArray.push(`${Number(x) + i}${y}`);
+      if (occupiedCells.indexOf(`${Number(x) + i}${y}`) !== -1) {
+        isOccupied = true;
+      }
+    }
+    setHoveredCells(hoveredCellsArray);
+    isOccupied ? setIsHoverable(false) : setIsHoverable(true);
+    return;
   };
 
   const renderHover = (xCoord: number, yCoord: number) => {
     const isHovered = hoveredCells.indexOf(`${xCoord}${yCoord}`) !== -1;
     const isOccupied = occupiedCells.indexOf(`${xCoord}${yCoord}`) !== -1;
 
-    if (isHorizontal) {
-      return isHovered && isOccupied
-        ? 'occupied-cell'
-        : isOccupied
-        ? 'ship-cell'
-        : isHovered && isHoverable
-        ? 'ship-cell'
-        : (isHovered && !isHoverable) || isOccupied
-        ? 'occupied-cell'
-        : undefined;
-    }
+    return isHovered && isOccupied
+      ? 'occupied-cell'
+      : isOccupied
+      ? 'ship-cell'
+      : isHovered && isHoverable
+      ? 'ship-cell'
+      : isHovered && !isHoverable
+      ? 'occupied-cell'
+      : undefined;
   };
 
   const placeShip = (e: React.MouseEvent) => {
-    console.log(placedShips);
-
     const target = e.target as HTMLDivElement;
     const dataCoord = target.getAttribute('data-coord');
     if (dataCoord === null) return;
     if (!isHoverable) return;
     if (!ship) return;
 
-    let arr: number[][] = [];
+    let newShipCoords: number[][] = [];
     let occupiedArr: string[] = [];
-    if (isHorizontal) {
+    if (props.isHorizontal) {
       for (let i = 0; i < ship; i++) {
-        let test = [Number(dataCoord![0]), Number(dataCoord![1]) + i];
-        occupiedArr.push(`${dataCoord![0]}${Number(dataCoord![1]) + i}`);
-        arr.push(test);
+        let x = Number(dataCoord![0]);
+        let y = Number(dataCoord![1]) + i;
+        occupiedArr.push(`${x}${y}`);
+        newShipCoords.push([x, y]);
+      }
+    }
+    if (!props.isHorizontal) {
+      for (let i = 0; i < ship; i++) {
+        let x = Number(dataCoord![0]) + i;
+        let y = Number(dataCoord![1]);
+        occupiedArr.push(`${x}${y}`);
+        newShipCoords.push([x, y]);
       }
     }
 
@@ -115,7 +126,7 @@ function SingleBoard() {
     });
 
     setPlacedShips((prevState) => {
-      return { ...prevState, [ShipEnum[ship]]: arr };
+      return { ...prevState, [ShipEnum[ship]]: newShipCoords };
     });
     setShip((prevState) => prevState - 1);
   };

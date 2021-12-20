@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Components import *start
 import SingleBoard from './Components/SingleBoard';
@@ -11,10 +11,16 @@ import './styles/helpers.css';
 // css imports *end
 
 function App() {
+  const [isHorizontal, setIsHorizontal] = useState<boolean>(true);
+
+  function toggleAxis() {
+    setIsHorizontal(!isHorizontal);
+  }
+
   return (
     <div className='split-screen'>
-      <SingleBoard />
-      <Harbor />
+      <SingleBoard isHorizontal={isHorizontal} />
+      <Harbor isHorizontal={isHorizontal} toggleAxis={toggleAxis} />
     </div>
   );
 }
