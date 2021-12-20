@@ -6,3 +6,11 @@
   width: 30vw;
   height: 30vw;
 }
+
+.ship-cell {
+  background-color: yellow;
+}
+
+.occupied-cell {
+  background-color: green;
+}
