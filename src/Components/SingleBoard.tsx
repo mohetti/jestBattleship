@@ -1,31 +1,18 @@
 import React, { useState } from 'react';
-import uniqid from 'uniqid';
 import '../styles/single-board.css';
+import { Fleet, ShipEnum } from '../Types/shipTypes';
+import BoardCells from './BoardCells';
 
 type Props = {
   isHorizontal: boolean;
 };
-
-type T = {
-  bigShip: number[][];
-  medShip: number[][];
-  smallShip: number[][];
-  tinyShip: number[][];
-};
-
-enum ShipEnum {
-  tinyShip = 1,
-  smallShip,
-  medShip,
-  bigShip,
-}
 
 function SingleBoard(props: Props) {
   const [ship, setShip] = useState(4);
   const [isHoverable, setIsHoverable] = useState(true);
   const [occupiedCells, setOccupiedCells] = useState<string[]>([]);
   const [hoveredCells, setHoveredCells] = useState<string[]>([]);
-  const [placedShips, setPlacedShips] = useState<T>({
+  const [placedShips, setPlacedShips] = useState<Fleet>({
     bigShip: [],
     medShip: [],
     smallShip: [],
@@ -34,7 +21,6 @@ function SingleBoard(props: Props) {
 
   const highlightCells = (e: React.MouseEvent) => {
     const target = e.target as HTMLDivElement;
-    const dataCoord = target.getAttribute('data-coord');
     let [x, y] = [...String(target.getAttribute('data-coord'))];
     const hoveredCellsArray = [];
     let isOccupied = false;
@@ -131,69 +117,15 @@ function SingleBoard(props: Props) {
     setShip((prevState) => prevState - 1);
   };
 
-  const renderCells = () => {
-    const arr = [];
-    for (let i = 0; i < 10; i++) {
-      arr.push(
-        <div onClick={placeShip} className='fill-space flex-row' key={uniqid()}>
-          <div
-            onMouseEnter={highlightCells}
-            data-coord={`${i}0`}
-            className={`fill-space border ${renderHover(i, 0)}`}
-          ></div>
-          <div
-            onMouseEnter={highlightCells}
-            data-coord={`${i}1`}
-            className={`fill-space border ${renderHover(i, 1)}`}
-          ></div>
-          <div
-            onMouseEnter={highlightCells}
-            data-coord={`${i}2`}
-            className={`fill-space border ${renderHover(i, 2)}`}
-          ></div>
-          <div
-            onMouseEnter={highlightCells}
-            data-coord={`${i}3`}
-            className={`fill-space border ${renderHover(i, 3)}`}
-          ></div>
-          <div
-            onMouseEnter={highlightCells}
-            data-coord={`${i}4`}
-            className={`fill-space border ${renderHover(i, 4)}`}
-          ></div>
-          <div
-            onMouseEnter={highlightCells}
-            data-coord={`${i}5`}
-            className={`fill-space border ${renderHover(i, 5)}`}
-          ></div>
-          <div
-            onMouseEnter={highlightCells}
-            data-coord={`${i}6`}
-            className={`fill-space border ${renderHover(i, 6)}`}
-          ></div>
-          <div
-            onMouseEnter={highlightCells}
-            data-coord={`${i}7`}
-            className={`fill-space border ${renderHover(i, 7)}`}
-          ></div>
-          <div
-            onMouseEnter={highlightCells}
-            data-coord={`${i}8`}
-            className={`fill-space border ${renderHover(i, 8)}`}
-          ></div>
-          <div
-            onMouseEnter={highlightCells}
-            data-coord={`${i}9`}
-            className={`fill-space border ${renderHover(i, 9)}`}
-          ></div>
-        </div>
-      );
-    }
-    return arr.map((x) => x);
-  };
   return (
     <div className='fill-space flex-row center hghl-red'>
-      <div className='board-container '>{renderCells()}</div>
+      <div className='board-container '>
+        <BoardCells
+          placeShip={placeShip}
+          highlightCells={highlightCells}
+          renderHover={renderHover}
+        />
+      </div>
     </div>
   );
 }

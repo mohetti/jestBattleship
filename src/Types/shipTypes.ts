@@ -24,3 +24,10 @@ export type PlayerMethods = {
   receiveAttack: (coord: [number, number]) => boolean | undefined;
   getIsFleetSunk: () => boolean;
 };
+
+export enum ShipEnum {
+  tinyShip = 1,
+  smallShip,
+  medShip,
+  bigShip,
+}
