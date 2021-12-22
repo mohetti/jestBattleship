@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Harbor from '../../Components/Harbor';
+import Harbor from '.';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('Harbor tests', () => {

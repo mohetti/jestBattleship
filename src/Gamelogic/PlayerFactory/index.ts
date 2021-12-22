@@ -1,5 +1,5 @@
-import { Board, Fleet } from '../Types/shipTypes';
-import Ship from './ShipFactory';
+import { Board, Fleet } from '../../Types/shipTypes';
+import Ship from '../ShipFactory';
 
 const Player = () => {
   let name: string;

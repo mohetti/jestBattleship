@@ -1,4 +1,4 @@
-import Ship from '../../Gamelogic/ShipFactory';
+import Ship from '.';
 import { ShipMethods } from '../../Types/shipTypes';
 
 describe('Testing ShipFactory methods', () => {

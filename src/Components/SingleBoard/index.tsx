@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../styles/single-board.css';
-import { Fleet, ShipEnum } from '../Types/shipTypes';
+import './single-board.css';
+import { Fleet, ShipEnum } from '../../Types/shipTypes';
 import BoardCells from './BoardCells';
 
 type Props = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SingleBoard from '../../Components/SingleBoard';
+import SingleBoard from '.';
 
 describe('SingleBoard Component tests', () => {
   let container: HTMLDivElement;

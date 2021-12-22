@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Axis from './Axis';
-import '../styles/harbor.css';
+import './harbor.css';
 
 type Props = {
   isHorizontal: boolean;

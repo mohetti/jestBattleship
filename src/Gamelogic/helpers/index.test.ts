@@ -1,4 +1,4 @@
-import { randomFleet, hasNoJump } from '../../Gamelogic/helpers';
+import { randomFleet, hasNoJump } from '.';
 import { Fleet } from '../../Types/shipTypes';
 
 describe('Testing random placement of ships', () => {

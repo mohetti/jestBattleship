@@ -1,4 +1,4 @@
-import Player from '../../Gamelogic/PlayerFactory';
+import Player from '.';
 import { Fleet, PlayerMethods } from '../../Types/shipTypes';
 
 const placeShipMock: Fleet = {
