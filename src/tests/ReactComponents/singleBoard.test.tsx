@@ -22,3 +22,5 @@ describe('SingleBoard Component tests', () => {
     }
   });
 });
+
+// https://reactjs.org/docs/testing-recipes.html

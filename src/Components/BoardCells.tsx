@@ -7,7 +7,7 @@ type Props = {
   renderHover: (x: number, y: number) => string | undefined;
 };
 
-function BoardCells(props: any) {
+function BoardCells(props: Props) {
   const { placeShip, highlightCells, renderHover } = props;
   const renderCells = () => {
     const arr = [];
