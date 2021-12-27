@@ -42,6 +42,19 @@ describe('SingleBoard Component tests', () => {
     expect(secondTargetChild?.classList.contains('ship-cell')).toBeTruthy();
     expect(thirdTargetChild?.classList.contains('ship-cell')).toBeTruthy();
     expect(fourthTargetChild?.classList.contains('ship-cell')).toBeFalsy();
+
+    act(() => {
+      ReactTestUtils.Simulate.mouseEnter(
+        document.querySelector(`[data-coord='08']`)!
+      );
+    });
+    const illegalTargetCell = document.querySelector("[data-coord='08']");
+    const illegalChildCell = document.querySelector("[data-coord='09']");
+    const uneffectedCell = document.querySelector("[data-coord='07']");
+    expect(illegalTargetCell?.classList.contains('occupied-cell')).toBeTruthy();
+    expect(illegalChildCell?.classList.contains('occupied-cell')).toBeTruthy();
+    expect(uneffectedCell?.classList.contains('ship-cell')).toBeFalsy();
+    expect(uneffectedCell?.classList.contains('occupied-cell')).toBeFalsy();
   });
 
   it.skip('Clicking empty field shows right class and hovering over occupied cell does too', () => {
@@ -70,5 +83,41 @@ describe('SingleBoard Component tests', () => {
     expect(fithTargetChild?.classList.contains('occupied-cell')).toBeFalsy();
     expect(fithTargetChild?.classList.contains('ship-cell')).toBeFalsy();
     expect(fithTargetChild?.classList.contains('undefined')).toBeTruthy();
+  });
+
+  it.skip('Check if all ships are placed and no further classes are added', () => {
+    act(() => {
+      ReactTestUtils.Simulate.click(
+        document.querySelector("[data-coord='00']")!
+      );
+    });
+    act(() => {
+      ReactTestUtils.Simulate.click(
+        document.querySelector("[data-coord='04']")!
+      );
+    });
+    act(() => {
+      ReactTestUtils.Simulate.click(
+        document.querySelector("[data-coord='07']")!
+      );
+    });
+    act(() => {
+      ReactTestUtils.Simulate.click(
+        document.querySelector("[data-coord='09']")!
+      );
+    });
+
+    for (let y = 0; y < 10; y++) {
+      let dataPoint = document.querySelector(`[data-coord="0${y}"]`);
+      expect(dataPoint?.classList.contains('ship-cell')).toBeTruthy();
+    }
+
+    for (let x = 1; x < 10; x++) {
+      for (let y = 0; y < 10; y++) {
+        let dataPoint = document.querySelector(`[data-coord="${x}${y}"]`);
+        expect(dataPoint?.classList.contains('ship-cell')).toBeFalsy();
+        expect(dataPoint?.classList.contains('occupied-cell')).toBeFalsy();
+      }
+    }
   });
 });
