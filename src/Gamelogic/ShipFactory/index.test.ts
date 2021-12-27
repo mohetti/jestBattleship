@@ -1,7 +1,7 @@
 import Ship from '.';
 import { ShipMethods } from '../../Types/shipTypes';
 
-describe('Testing ShipFactory methods', () => {
+describe.skip('Testing ShipFactory methods', () => {
   let bigShip: ShipMethods;
   beforeEach(() => {
     bigShip = Ship(4);
