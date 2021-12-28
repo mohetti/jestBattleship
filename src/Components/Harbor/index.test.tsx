@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Harbor from '.';
 import '@testing-library/jest-dom/extend-expect';
 
-describe.skip('Harbor tests', () => {
+describe('Harbor tests', () => {
   let container: HTMLDivElement;
   beforeEach(() => {
     container = document.createElement('div');

@@ -2,6 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import SingleBoard from '.';
 import ReactTestUtils, { act } from 'react-dom/test-utils';
+import {
+  nodeAttributeArray,
+  hasShipCellEffect,
+  hasOccupiedEffect,
+} from './testhelpers';
 
 describe('SingleBoard Component tests', () => {
   let container: HTMLDivElement;
@@ -17,7 +22,7 @@ describe('SingleBoard Component tests', () => {
     container.remove();
   });
 
-  it.skip('Renders cells correctly', () => {
+  it('Renders cells correctly', () => {
     const boardCells = container.querySelector('.board-container')!.childNodes;
     expect(boardCells).toHaveLength(10);
     for (let i = 0; i < 10; i++) {
@@ -25,39 +30,40 @@ describe('SingleBoard Component tests', () => {
     }
   });
 
-  it.skip('Hover displays correct color', () => {
+  it('Hover displays correct color', () => {
     act(() => {
       ReactTestUtils.Simulate.mouseEnter(
         document.querySelector(`[data-coord='00']`)!
       );
     });
-    const targetCell = document.querySelector("[data-coord='00']");
-    const firstTargetChild = document.querySelector("[data-coord='01']");
-    const secondTargetChild = document.querySelector("[data-coord='02']");
-    const thirdTargetChild = document.querySelector("[data-coord='03']");
-    const fourthTargetChild = document.querySelector("[data-coord='04]");
+    const targetCell = nodeAttributeArray('00');
+    const firstTargetChild = nodeAttributeArray('01');
+    const secondTargetChild = nodeAttributeArray('02');
+    const thirdTargetChild = nodeAttributeArray('03');
+    const fourthTargetChild = nodeAttributeArray('04');
 
-    expect(targetCell?.classList.contains('ship-cell')).toBeTruthy();
-    expect(firstTargetChild?.classList.contains('ship-cell')).toBeTruthy();
-    expect(secondTargetChild?.classList.contains('ship-cell')).toBeTruthy();
-    expect(thirdTargetChild?.classList.contains('ship-cell')).toBeTruthy();
-    expect(fourthTargetChild?.classList.contains('ship-cell')).toBeFalsy();
+    expect(targetCell.some(hasShipCellEffect)).toBeTruthy();
+    expect(firstTargetChild.some(hasShipCellEffect)).toBeTruthy();
+    expect(secondTargetChild.some(hasShipCellEffect)).toBeTruthy();
+    expect(thirdTargetChild.some(hasShipCellEffect)).toBeTruthy();
+    expect(fourthTargetChild.some(hasShipCellEffect)).toBeFalsy();
+    expect(fourthTargetChild.some(hasOccupiedEffect)).toBeFalsy();
 
     act(() => {
       ReactTestUtils.Simulate.mouseEnter(
         document.querySelector(`[data-coord='08']`)!
       );
     });
-    const illegalTargetCell = document.querySelector("[data-coord='08']");
-    const illegalChildCell = document.querySelector("[data-coord='09']");
-    const uneffectedCell = document.querySelector("[data-coord='07']");
-    expect(illegalTargetCell?.classList.contains('occupied-cell')).toBeTruthy();
-    expect(illegalChildCell?.classList.contains('occupied-cell')).toBeTruthy();
-    expect(uneffectedCell?.classList.contains('ship-cell')).toBeFalsy();
-    expect(uneffectedCell?.classList.contains('occupied-cell')).toBeFalsy();
+    const illegalTargetCell = nodeAttributeArray('08');
+    const illegalChildCell = nodeAttributeArray('09');
+    const uneffectedCell = nodeAttributeArray('07');
+    expect(illegalTargetCell.some(hasOccupiedEffect)).toBeTruthy();
+    expect(illegalChildCell.some(hasOccupiedEffect)).toBeTruthy();
+    expect(uneffectedCell.some(hasOccupiedEffect)).toBeFalsy();
+    expect(uneffectedCell.some(hasShipCellEffect)).toBeFalsy();
   });
 
-  it.skip('Clicking empty field shows right class and hovering over occupied cell does too', () => {
+  it('Clicking empty field shows right class and hovering over occupied cell does too', () => {
     act(() => {
       ReactTestUtils.Simulate.click(
         document.querySelector("[data-coord='00']")!
@@ -68,24 +74,23 @@ describe('SingleBoard Component tests', () => {
         document.querySelector("[data-coord='02']")!
       );
     });
-    const targetCell = document.querySelector("[data-coord='00']");
-    const firstTargetChild = document.querySelector("[data-coord='01']");
-    const secondTargetChild = document.querySelector("[data-coord='02']");
-    const thirdTargetChild = document.querySelector("[data-coord='03']");
-    const fourthTargetChild = document.querySelector("[data-coord='04']");
-    const fithTargetChild = document.querySelector("[data-coord='05']");
+    const targetCell = nodeAttributeArray('00');
+    const firstTargetChild = nodeAttributeArray('01');
+    const secondTargetChild = nodeAttributeArray('02');
+    const thirdTargetChild = nodeAttributeArray('03');
+    const fourthTargetChild = nodeAttributeArray('04');
+    const fithTargetChild = nodeAttributeArray('05');
 
-    expect(targetCell?.classList.contains('ship-cell')).toBeTruthy();
-    expect(firstTargetChild?.classList.contains('ship-cell')).toBeTruthy();
-    expect(secondTargetChild?.classList.contains('occupied-cell')).toBeTruthy();
-    expect(thirdTargetChild?.classList.contains('occupied-cell')).toBeTruthy();
-    expect(fourthTargetChild?.classList.contains('occupied-cell')).toBeTruthy();
-    expect(fithTargetChild?.classList.contains('occupied-cell')).toBeFalsy();
-    expect(fithTargetChild?.classList.contains('ship-cell')).toBeFalsy();
-    expect(fithTargetChild?.classList.contains('undefined')).toBeTruthy();
+    expect(targetCell.some(hasShipCellEffect)).toBeTruthy();
+    expect(firstTargetChild.some(hasShipCellEffect)).toBeTruthy();
+    expect(secondTargetChild.some(hasOccupiedEffect)).toBeTruthy();
+    expect(thirdTargetChild.some(hasOccupiedEffect)).toBeTruthy();
+    expect(fourthTargetChild.some(hasOccupiedEffect)).toBeTruthy();
+    expect(fithTargetChild.some(hasOccupiedEffect)).toBeFalsy();
+    expect(fithTargetChild.some(hasShipCellEffect)).toBeFalsy();
   });
 
-  it.skip('Check if all ships are placed and no further classes are added', () => {
+  it('Check if all ships are placed and no further classes are added', () => {
     act(() => {
       ReactTestUtils.Simulate.click(
         document.querySelector("[data-coord='00']")!
@@ -108,15 +113,15 @@ describe('SingleBoard Component tests', () => {
     });
 
     for (let y = 0; y < 10; y++) {
-      let dataPoint = document.querySelector(`[data-coord="0${y}"]`);
-      expect(dataPoint?.classList.contains('ship-cell')).toBeTruthy();
+      let dataPoint = nodeAttributeArray(`0${y}`);
+      expect(dataPoint?.some(hasShipCellEffect)).toBeTruthy();
     }
 
     for (let x = 1; x < 10; x++) {
       for (let y = 0; y < 10; y++) {
-        let dataPoint = document.querySelector(`[data-coord="${x}${y}"]`);
-        expect(dataPoint?.classList.contains('ship-cell')).toBeFalsy();
-        expect(dataPoint?.classList.contains('occupied-cell')).toBeFalsy();
+        let dataPoint = nodeAttributeArray(`${x}${y}`);
+        expect(dataPoint.some(hasShipCellEffect)).toBeFalsy();
+        expect(dataPoint.some(hasOccupiedEffect)).toBeFalsy();
       }
     }
   });

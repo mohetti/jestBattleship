@@ -1,7 +1,7 @@
 import { randomFleet, hasNoJump } from '.';
 import { Fleet } from '../../Types/shipTypes';
 
-describe.skip('Testing random placement of ships', () => {
+describe('Testing random placement of ships', () => {
   let fleet: Fleet;
   beforeEach(() => {
     fleet = randomFleet();
