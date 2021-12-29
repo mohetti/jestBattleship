@@ -2,35 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Harbor from '.';
 import '@testing-library/jest-dom/extend-expect';
+import { render, screen } from '@testing-library/react';
 
-describe('Harbor tests', () => {
-  let container: HTMLDivElement;
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
+function setup(isBool: boolean) {
+  const toggleMock = jest.fn(function () {});
+  const utils = render(
+    <Harbor toggleAxis={toggleMock} isHorizontal={isBool} />
+  );
+  const button = screen.getByRole('button');
+  return { ...utils, button };
+}
 
-    const toggleMock = jest.fn(function () {});
-    ReactDOM.render(
-      <Harbor isHorizontal={true} toggleAxis={toggleMock} />,
-      container
-    );
-  });
-  afterEach(() => {
-    document.body.removeChild(container);
-    container.remove();
-  });
+it('Testing, if button is shown with initial value', () => {
+  const { button } = setup(true);
+  expect(button).toBeInTheDocument();
+  expect(button.textContent).toBe('vertical');
+});
 
-  it('Renders correctly', () => {
-    const ships = container.querySelectorAll('.ship');
-    const bigShip = container.querySelector('[data-test="big-ship"]');
-    const medShip = container.querySelector('[data-test="med-ship"]');
-    const smallShip = container.querySelector('[data-test="small-ship"]');
-    const tinyShip = container.querySelector('[data-test="tiny-ship"]');
-
-    expect(ships).toHaveLength(4);
-    expect(bigShip).toBeInTheDocument();
-    expect(medShip).toBeInTheDocument();
-    expect(smallShip).toBeInTheDocument();
-    expect(tinyShip).toBeInTheDocument();
-  });
+it('Testing, if button shows toggled value', () => {
+  const { button } = setup(false);
+  expect(button).toBeInTheDocument();
+  expect(button.textContent).toBe('horizontal');
 });
