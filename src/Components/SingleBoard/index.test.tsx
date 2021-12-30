@@ -6,144 +6,112 @@ import {
   nodeAttributeArray,
   hasShipCellEffect,
   hasOccupiedEffect,
+  attrOfSpecificCell,
 } from './util/testhelpers';
+import '@testing-library/jest-dom/extend-expect';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-describe.skip('SingleBoard Component tests', () => {
-  let container: HTMLDivElement;
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-    act(() => {
-      ReactDOM.render(<SingleBoard isHorizontal={true} />, container);
-    });
+it('Renders cells correctly', () => {
+  render(<SingleBoard isHorizontal={true} />);
+
+  const rowContainers = screen.getAllByTestId('row-container');
+  expect(rowContainers).toHaveLength(10);
+  for (let i = 0; i < 10; i++) {
+    expect(rowContainers[i].childNodes).toHaveLength(10);
+  }
+});
+
+it('Hover displays ship-cell effect correctly', () => {
+  render(<SingleBoard isHorizontal={true} />);
+
+  userEvent.hover(screen.getByTestId('00'));
+
+  expect(attrOfSpecificCell('00').some(hasShipCellEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('01').some(hasShipCellEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('02').some(hasShipCellEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('03').some(hasShipCellEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('04').some(hasOccupiedEffect)).toBeFalsy();
+  expect(attrOfSpecificCell('05').some(hasShipCellEffect)).toBeFalsy();
+});
+
+it('Hover displays occupied effect correctly', () => {
+  render(<SingleBoard isHorizontal={true} />);
+
+  userEvent.hover(screen.getByTestId('08'));
+  expect(attrOfSpecificCell('07').some(hasShipCellEffect)).toBeFalsy();
+  expect(attrOfSpecificCell('07').some(hasOccupiedEffect)).toBeFalsy();
+  expect(attrOfSpecificCell('08').some(hasOccupiedEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('09').some(hasOccupiedEffect)).toBeTruthy();
+});
+
+it('Clicking empty field shows right class and hovering over occupied cell does too', () => {
+  render(<SingleBoard isHorizontal={true} />);
+
+  act(() => {
+    userEvent.click(screen.getByTestId('00'));
   });
-  afterEach(() => {
-    document.body.removeChild(container);
-    container.remove();
-  });
-
-  it('Renders cells correctly', () => {
-    const boardCells = container.querySelector('.board-container')!.childNodes;
-    expect(boardCells).toHaveLength(10);
-    for (let i = 0; i < 10; i++) {
-      expect(boardCells[i].childNodes).toHaveLength(10);
-    }
-  });
-
-  it('Hover displays correct color', () => {
-    act(() => {
-      ReactTestUtils.Simulate.mouseEnter(
-        document.querySelector(`[data-coord='00']`)!
-      );
-    });
-    const targetCell = nodeAttributeArray('00');
-    const firstTargetChild = nodeAttributeArray('01');
-    const secondTargetChild = nodeAttributeArray('02');
-    const thirdTargetChild = nodeAttributeArray('03');
-    const fourthTargetChild = nodeAttributeArray('04');
-
-    expect(targetCell.some(hasShipCellEffect)).toBeTruthy();
-    expect(firstTargetChild.some(hasShipCellEffect)).toBeTruthy();
-    expect(secondTargetChild.some(hasShipCellEffect)).toBeTruthy();
-    expect(thirdTargetChild.some(hasShipCellEffect)).toBeTruthy();
-    expect(fourthTargetChild.some(hasShipCellEffect)).toBeFalsy();
-    expect(fourthTargetChild.some(hasOccupiedEffect)).toBeFalsy();
-
-    act(() => {
-      ReactTestUtils.Simulate.mouseEnter(
-        document.querySelector(`[data-coord='08']`)!
-      );
-    });
-    const illegalTargetCell = nodeAttributeArray('08');
-    const illegalChildCell = nodeAttributeArray('09');
-    const uneffectedCell = nodeAttributeArray('07');
-    expect(illegalTargetCell.some(hasOccupiedEffect)).toBeTruthy();
-    expect(illegalChildCell.some(hasOccupiedEffect)).toBeTruthy();
-    expect(uneffectedCell.some(hasOccupiedEffect)).toBeFalsy();
-    expect(uneffectedCell.some(hasShipCellEffect)).toBeFalsy();
+  act(() => {
+    userEvent.hover(screen.getByTestId('02'));
   });
 
-  it('Clicking empty field shows right class and hovering over occupied cell does too', () => {
-    act(() => {
-      ReactTestUtils.Simulate.click(
-        document.querySelector("[data-coord='00']")!
-      );
-    });
-    act(() => {
-      ReactTestUtils.Simulate.mouseEnter(
-        document.querySelector("[data-coord='02']")!
-      );
-    });
-    const targetCell = nodeAttributeArray('00');
-    const firstTargetChild = nodeAttributeArray('01');
-    const secondTargetChild = nodeAttributeArray('02');
-    const thirdTargetChild = nodeAttributeArray('03');
-    const fourthTargetChild = nodeAttributeArray('04');
-    const fithTargetChild = nodeAttributeArray('05');
+  expect(attrOfSpecificCell('00').some(hasShipCellEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('01').some(hasShipCellEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('02').some(hasOccupiedEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('03').some(hasOccupiedEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('04').some(hasOccupiedEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('05').some(hasOccupiedEffect)).toBeFalsy();
+  expect(attrOfSpecificCell('05').some(hasShipCellEffect)).toBeFalsy();
+});
 
-    expect(targetCell.some(hasShipCellEffect)).toBeTruthy();
-    expect(firstTargetChild.some(hasShipCellEffect)).toBeTruthy();
-    expect(secondTargetChild.some(hasOccupiedEffect)).toBeTruthy();
-    expect(thirdTargetChild.some(hasOccupiedEffect)).toBeTruthy();
-    expect(fourthTargetChild.some(hasOccupiedEffect)).toBeTruthy();
-    expect(fithTargetChild.some(hasOccupiedEffect)).toBeFalsy();
-    expect(fithTargetChild.some(hasShipCellEffect)).toBeFalsy();
+it('Clicking on occupied spot doesnt change anything', () => {
+  render(<SingleBoard isHorizontal={true} />);
+  act(() => {
+    userEvent.click(screen.getByTestId('00'));
   });
+  userEvent.click(screen.getByTestId('03'));
 
-  it('Check if all ships are placed and no further classes are added', () => {
-    act(() => {
-      ReactTestUtils.Simulate.click(
-        document.querySelector("[data-coord='00']")!
-      );
-    });
-    act(() => {
-      ReactTestUtils.Simulate.click(
-        document.querySelector("[data-coord='04']")!
-      );
-    });
-    act(() => {
-      ReactTestUtils.Simulate.click(
-        document.querySelector("[data-coord='07']")!
-      );
-    });
-    act(() => {
-      ReactTestUtils.Simulate.click(
-        document.querySelector("[data-coord='09']")!
-      );
-    });
+  expect(attrOfSpecificCell('04').some(hasShipCellEffect)).toBeFalsy();
+  expect(attrOfSpecificCell('04').some(hasOccupiedEffect)).toBeTruthy();
+});
 
+it('Check if all ships are placed and no further classes are added', () => {
+  render(<SingleBoard isHorizontal={true} />);
+  act(() => {
+    userEvent.click(screen.getByTestId('00'), undefined, { skipHover: true });
+  });
+  act(() => {
+    userEvent.click(screen.getByTestId('04'), undefined, { skipHover: true });
+  });
+  act(() => {
+    userEvent.click(screen.getByTestId('07'), undefined, { skipHover: true });
+  });
+  userEvent.click(screen.getByTestId('09'), undefined, { skipHover: true });
+
+  for (let y = 0; y < 10; y++) {
+    expect(attrOfSpecificCell(`0${y}`).some(hasShipCellEffect)).toBeTruthy();
+  }
+
+  for (let x = 1; x < 10; x++) {
     for (let y = 0; y < 10; y++) {
-      let dataPoint = nodeAttributeArray(`0${y}`);
-      expect(dataPoint?.some(hasShipCellEffect)).toBeTruthy();
+      expect(
+        attrOfSpecificCell(`${x}${y}`).some(hasShipCellEffect)
+      ).toBeFalsy();
+      expect(
+        attrOfSpecificCell(`${x}${y}`).some(hasOccupiedEffect)
+      ).toBeFalsy();
     }
+  }
+});
 
-    for (let x = 1; x < 10; x++) {
-      for (let y = 0; y < 10; y++) {
-        let dataPoint = nodeAttributeArray(`${x}${y}`);
-        expect(dataPoint.some(hasShipCellEffect)).toBeFalsy();
-        expect(dataPoint.some(hasOccupiedEffect)).toBeFalsy();
-      }
-    }
-  });
+it('works with vertical alignment', () => {
+  render(<SingleBoard isHorizontal={false} />);
 
-  /*it.skip('works with vertical alignment', () => {
-    render(<SingleBoard isHorizontal={false} />);
-    act(() => {
-      ReactTestUtils.Simulate.mouseEnter(
-        document.querySelector(`[data-coord='00']`)!
-      );
-    });
-    const targetCell = nodeAttributeArray('00');
-    const firstTargetChild = nodeAttributeArray('10');
-    const secondTargetChild = nodeAttributeArray('20');
-    const thirdTargetChild = nodeAttributeArray('30');
-    const fourthTargetChild = nodeAttributeArray('40');
-
-    expect(targetCell.some(hasShipCellEffect)).toBeTruthy();
-    expect(firstTargetChild.some(hasShipCellEffect)).toBeTruthy();
-    expect(secondTargetChild.some(hasShipCellEffect)).toBeTruthy();
-    expect(thirdTargetChild.some(hasShipCellEffect)).toBeTruthy();
-    expect(fourthTargetChild.some(hasOccupiedEffect)).toBeFalsy();
-    expect(fourthTargetChild.some(hasShipCellEffect)).toBeFalsy();
-  });*/
+  userEvent.hover(screen.getByTestId('00'));
+  expect(attrOfSpecificCell('00').some(hasShipCellEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('10').some(hasShipCellEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('20').some(hasShipCellEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('30').some(hasShipCellEffect)).toBeTruthy();
+  expect(attrOfSpecificCell('40').some(hasOccupiedEffect)).toBeFalsy();
+  expect(attrOfSpecificCell('40').some(hasOccupiedEffect)).toBeFalsy();
 });

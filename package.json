@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@types/jest": "^27.0.3",
@@ -27,6 +28,7 @@
     "webpack-dev-server": "^4.6.0"
   },
   "dependencies": {
+    "@testing-library/user-event": "^13.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "uniqid": "^5.4.0"
