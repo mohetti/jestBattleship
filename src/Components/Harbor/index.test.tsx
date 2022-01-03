@@ -2,24 +2,40 @@ import React from 'react';
 import Harbor from '.';
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 function setup(isBool: boolean) {
   const toggleMock = jest.fn(function () {});
+  const axisRole = isBool ? 'vertical' : 'horizontal';
+
   const utils = render(
     <Harbor toggleAxis={toggleMock} isHorizontal={isBool} />
   );
-  const button = screen.getByRole('button');
-  return { ...utils, button };
+
+  const axisBtn = screen.getByRole('button', {
+    name: axisRole,
+  });
+
+  const nameInput = screen.getByLabelText('Enter your name');
+
+  return { ...utils, axisBtn, nameInput };
 }
 
 it.skip('Testing, if button is shown with initial value', () => {
-  const { button } = setup(true);
-  expect(button).toBeInTheDocument();
-  expect(button.textContent).toBe('vertical');
+  const { axisBtn } = setup(true);
+  expect(axisBtn).toBeInTheDocument();
+  expect(axisBtn.textContent).toBe('vertical');
 });
 
 it.skip('Testing, if button shows toggled value', () => {
-  const { button } = setup(false);
-  expect(button).toBeInTheDocument();
-  expect(button.textContent).toBe('horizontal');
+  const { axisBtn } = setup(false);
+  expect(axisBtn).toBeInTheDocument();
+  expect(axisBtn.textContent).toBe('horizontal');
+});
+
+it.skip('Testing if name gets displayed', async () => {
+  const { nameInput } = setup(true);
+  expect(nameInput).toBeInTheDocument();
+  await userEvent.type(nameInput, 'Mohahemi');
+  expect(nameInput).toHaveValue('Mohahemi');
 });
