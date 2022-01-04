@@ -9,7 +9,11 @@ function setup(isBool: boolean) {
   const axisRole = isBool ? 'vertical' : 'horizontal';
 
   const utils = render(
-    <Harbor toggleAxis={toggleMock} isHorizontal={isBool} />
+    <Harbor
+      startGame={toggleMock}
+      toggleAxis={toggleMock}
+      isHorizontal={isBool}
+    />
   );
 
   const axisBtn = screen.getByRole('button', {
@@ -21,19 +25,19 @@ function setup(isBool: boolean) {
   return { ...utils, axisBtn, nameInput };
 }
 
-it.skip('Testing, if button is shown with initial value', () => {
+it('Testing, if button is shown with initial value', () => {
   const { axisBtn } = setup(true);
   expect(axisBtn).toBeInTheDocument();
   expect(axisBtn.textContent).toBe('vertical');
 });
 
-it.skip('Testing, if button shows toggled value', () => {
+it('Testing, if button shows toggled value', () => {
   const { axisBtn } = setup(false);
   expect(axisBtn).toBeInTheDocument();
   expect(axisBtn.textContent).toBe('horizontal');
 });
 
-it.skip('Testing if name gets displayed', async () => {
+it('Testing if name gets displayed', async () => {
   const { nameInput } = setup(true);
   expect(nameInput).toBeInTheDocument();
   await userEvent.type(nameInput, 'Mohahemi');

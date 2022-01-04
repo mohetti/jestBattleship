@@ -25,12 +25,12 @@ function setup() {
   return player1;
 }
 
-it.skip('Properly sets a name for the player', () => {
+it('Properly sets a name for the player', () => {
   const { setName, getName } = setup();
   setName('Helmut');
   expect(getName()).toBe('Helmut');
 });
-it.skip('Populates abstracted Gameboard with all ships', () => {
+it('Populates abstracted Gameboard with all ships', () => {
   const { placeShips, getBoard } = setup();
   placeShips(placeShipMock);
   let boardState = getBoard();
@@ -53,7 +53,7 @@ it.skip('Populates abstracted Gameboard with all ships', () => {
   expect(boardState[4][6]).toBe(undefined);
 });
 
-it.skip('Testing receiveAttack => testing hits only. Testing fleetSunk after all .hitShip functions executed.', () => {
+it('Testing receiveAttack => testing hits only. Testing fleetSunk after all .hitShip functions executed.', () => {
   const { placeShips, receiveAttack, getIsFleetSunk } = setup();
   placeShips(placeShipMock);
 
@@ -71,7 +71,7 @@ it.skip('Testing receiveAttack => testing hits only. Testing fleetSunk after all
   expect(getIsFleetSunk()).toBeTruthy();
 });
 
-it.skip('Testing receiveAttack => Testing missed shots.', () => {
+it('Testing receiveAttack => Testing missed shots.', () => {
   const { placeShips, receiveAttack } = setup();
   placeShips(placeShipMock);
   expect(receiveAttack([0, 4])).toBe(undefined);

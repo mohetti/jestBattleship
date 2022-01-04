@@ -5,7 +5,7 @@ function setup() {
   return fleet;
 }
 
-it.skip('expect ships-arrays to have specific length and fleet itself to have specific keys', () => {
+it('expect ships-arrays to have specific length and fleet itself to have specific keys', () => {
   const fleet = setup();
   expect(fleet.bigShip).toHaveLength(4);
   expect(fleet.medShip).toHaveLength(3);
@@ -18,7 +18,7 @@ it.skip('expect ships-arrays to have specific length and fleet itself to have sp
     expect.arrayContaining(['bigShip', 'medShip', 'smallShip', 'tinyShip'])
   );
 });
-it.skip('hasNoJump tests, if the possible coords of a ship arent obstructed by another ship. If this would be the case, it returns false', () => {
+it('hasNoJump tests, if the possible coords of a ship arent obstructed by another ship. If this would be the case, it returns false', () => {
   expect(
     hasNoJump(
       [
