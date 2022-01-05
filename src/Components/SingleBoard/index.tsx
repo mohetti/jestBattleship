@@ -3,21 +3,18 @@ import './single-board.css';
 import { Fleet, ShipEnum } from '../../Types/shipTypes';
 import BoardCells from './BoardCells';
 
+import { useDispatch } from 'react-redux';
+
 type Props = {
   isHorizontal: boolean;
 };
 
 function SingleBoard(props: Props) {
+  const dispatch = useDispatch();
   const [ship, setShip] = useState(4);
   const [isHoverable, setIsHoverable] = useState(true);
   const [occupiedCells, setOccupiedCells] = useState<string[]>([]);
   const [hoveredCells, setHoveredCells] = useState<string[]>([]);
-  const [placedShips, setPlacedShips] = useState<Fleet>({
-    bigShip: [],
-    medShip: [],
-    smallShip: [],
-    tinyShip: [],
-  });
 
   const highlightCells = (e: React.MouseEvent) => {
     const target = e.target as HTMLDivElement;
@@ -111,9 +108,11 @@ function SingleBoard(props: Props) {
       return [...prevState, ...occupiedArr];
     });
 
-    setPlacedShips((prevState) => {
-      return { ...prevState, [ShipEnum[ship]]: newShipCoords };
+    dispatch({
+      type: 'fleet/set',
+      payload: { [ShipEnum[ship]]: newShipCoords },
     });
+
     setShip((prevState) => prevState - 1);
   };
 

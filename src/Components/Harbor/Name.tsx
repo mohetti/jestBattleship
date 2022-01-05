@@ -1,21 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { RootState } from '../../reducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 type Props = {
-  changePlayerName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  playerName: string;
-  startGame: (e: React.MouseEvent<HTMLFormElement>) => void;
+  transformErrorMsg: (type: string, msg?: string) => void;
 };
-
 function Name(props: Props) {
-  const { changePlayerName, playerName, startGame } = props;
+  const [playerName, setPlayerName] = useState('');
+  const fleet = useSelector((state: RootState) => state.fleet);
+
+  const changePlayerName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPlayerName(e.target.value);
+  };
+  const dispatch = useDispatch();
+
+  function submitIsNotReady(target: string) {
+    if (target !== 'submit') return true;
+    if (playerName === '') {
+      props.transformErrorMsg('name', 'Please enter a name');
+      return true;
+    }
+    if (Object.keys(fleet).length < 4) {
+      props.transformErrorMsg('fleet', 'Please place all ships');
+      return true;
+    }
+    return false;
+  }
+
+  function handleForm(e: React.MouseEvent<HTMLFormElement>) {
+    e.preventDefault();
+    props.transformErrorMsg('reset');
+    const target = e.target as HTMLInputElement;
+    if (submitIsNotReady(target.type)) return;
+    dispatch({
+      type: 'name/change',
+      payload: playerName,
+    });
+  }
   return (
     <div>
-      <form onClick={startGame}>
+      <form onClick={handleForm}>
         <label htmlFor='name'>Enter your name</label>
         <input
           onChange={changePlayerName}
           type='text'
           id='name'
+          name='name'
           placeholder='Enter your name'
           value={playerName}
         />

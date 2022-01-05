@@ -3,9 +3,15 @@ import { render, screen } from '@testing-library/react';
 import SingleBoard from '..';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import store from '../../../store';
 
 export function setup(isBool: boolean) {
-  const utils = render(<SingleBoard isHorizontal={isBool} />);
+  const utils = render(
+    <Provider store={store}>
+      <SingleBoard isHorizontal={isBool} />
+    </Provider>
+  );
   const initHover = async (coord: string) => {
     await userEvent.hover(screen.getByTestId(coord));
   };

@@ -1,24 +1,12 @@
 type T = {
   type: string;
-  payload: any;
+  payload: string;
 };
 
-export default function nameReducer(
-  state = { name: '', smth: 'Smth' },
-  action: T
-) {
+export default function nameReducer(state = 'Placeholder', action: T) {
   switch (action.type) {
     case 'name/change': {
-      return {
-        ...state,
-        name: action.payload,
-      };
-    }
-    case 'name/smth': {
-      return {
-        ...state,
-        smth: action.payload,
-      };
+      return action.payload;
     }
     default:
       return state;
