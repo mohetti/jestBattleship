@@ -1,33 +1,20 @@
-import React, { useState } from 'react';
-import SingleBoard from './Components/SingleBoard';
-import Harbor from './Components/Harbor';
-import { NavLink, Outlet } from 'react-router-dom';
-
+import React from 'react';
+import { Outlet, Route, Routes } from 'react-router-dom';
+import StartScreen from './Components/StartScreen';
+import GameScreen from './Components/GameScreen';
+import RouteMismatch from './Components/RouteMismatch';
 import './styles/main.css';
 import './styles/helpers.css';
-
-export function StartScreen() {
-  const [isHorizontal, setIsHorizontal] = useState<boolean>(true);
-
-  function toggleAxis() {
-    setIsHorizontal(!isHorizontal);
-  }
-  return (
-    <div className='split-screen'>
-      <SingleBoard isHorizontal={isHorizontal} />
-      <Harbor isHorizontal={isHorizontal} toggleAxis={toggleAxis} />
-    </div>
-  );
-}
-
-export function GameScreen() {
-  return <div>This is the Game Screen</div>;
-}
 
 function App() {
   return (
     <div className='full-screen'>
       <h1>Battleship</h1>
+      <Routes>
+        <Route path='/' element={<StartScreen />} />
+        <Route path='/game' element={<GameScreen />} />
+        <Route path='*' element={<RouteMismatch />} />
+      </Routes>
       <Outlet />
     </div>
   );
