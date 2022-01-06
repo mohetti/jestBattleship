@@ -1,5 +1,5 @@
 const path = require('path');
-const webpack = require('webpack');
+//const webpack = require('webpack');
 
 module.exports = {
   entry: './src/index.tsx',
@@ -25,5 +25,6 @@ module.exports = {
   },
   devServer: {
     port: 3000,
+    historyApiFallback: true,
   },
 };
