@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { RootState } from '../../reducer';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { Fleet } from '../../Types/shipTypes';
 
 type Props = {
   transformErrorMsg: (type: string, msg?: string) => void;
 };
 function Name(props: Props) {
   const [playerName, setPlayerName] = useState('');
-  const fleet = useSelector((state: RootState) => state.fleet);
+  const fleet: Fleet = useAppSelector((state) => state.fleet);
   let navigate = useNavigate();
 
   const changePlayerName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlayerName(e.target.value);
   };
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   function submitIsNotReady(target: string) {
     if (target !== 'submit') return true;
@@ -22,7 +22,7 @@ function Name(props: Props) {
       props.transformErrorMsg('name', 'Please enter a name');
       return true;
     }
-    if (Object.keys(fleet).length < 4) {
+    if (fleet.tinyShip.length === 0) {
       props.transformErrorMsg('fleet', 'Please place all ships');
       return true;
     }
@@ -37,6 +37,11 @@ function Name(props: Props) {
     dispatch({
       type: 'name/change',
       payload: playerName,
+    });
+
+    dispatch({
+      type: 'player/placeShips',
+      payload: fleet,
     });
     navigate('/game');
   }

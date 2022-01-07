@@ -2,7 +2,7 @@ import { Board, Fleet } from '../../Types/shipTypes';
 import Ship from '../ShipFactory';
 
 const Player = () => {
-  let name: string;
+  // let name: string;
   const board: Board = {};
   let fleetNumber = 4;
 
@@ -11,13 +11,6 @@ const Player = () => {
   const smallShip = Ship(2);
   const tinyShip = Ship(1);
 
-  function setName(playerName: string) {
-    name = playerName;
-    return;
-  }
-  function getName() {
-    return name;
-  }
   function placeShips(fleet: Fleet) {
     fleet.bigShip.forEach((x) => {
       board[x[0]] = { ...board[x[0]], [x[1]]: bigShip.hitShip };
@@ -49,8 +42,8 @@ const Player = () => {
   }
 
   return {
-    setName,
-    getName,
+    //setName,
+    //getName,
     placeShips,
     getBoard,
     receiveAttack,

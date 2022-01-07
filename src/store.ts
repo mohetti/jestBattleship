@@ -3,16 +3,12 @@ import { rootReducer } from './reducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 const print1 = (storeAPI: any) => (next: any) => (action: any) => {
-  /*console.log('dispatching', action);
-  let result = next(action);
-  console.log('next state', storeAPI.getState());
-  return result;*/
-  //console.log('next state: ', storeAPI.getState());
   return next(action);
 };
 
 const composedEnhancer = composeWithDevTools(applyMiddleware(print1));
 
-const store = createStore(rootReducer, undefined, composedEnhancer);
+export const store = createStore(rootReducer, undefined, composedEnhancer);
 
-export default store;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

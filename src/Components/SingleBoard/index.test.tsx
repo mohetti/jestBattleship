@@ -7,7 +7,7 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 import { screen } from '@testing-library/react';
 
-it.skip('Renders cells correctly', () => {
+it('Renders cells correctly', () => {
   setup(true);
   const rowContainers = screen.getAllByTestId('row-container');
   expect(rowContainers).toHaveLength(10);
@@ -16,7 +16,7 @@ it.skip('Renders cells correctly', () => {
   }
 });
 
-it.skip('Hover displays ship-cell effect correctly', () => {
+it('Hover displays ship-cell effect correctly', () => {
   const { initHover } = setup(true);
   initHover('00');
   expect(attrOfSpecificCell('00').some(hasShipCellEffect)).toBeTruthy();
@@ -27,7 +27,7 @@ it.skip('Hover displays ship-cell effect correctly', () => {
   expect(attrOfSpecificCell('05').some(hasShipCellEffect)).toBeFalsy();
 });
 
-it.skip('Hover displays occupied effect correctly', () => {
+it('Hover displays occupied effect correctly', () => {
   const { initHover } = setup(true);
   initHover('08');
   expect(attrOfSpecificCell('07').some(hasShipCellEffect)).toBeFalsy();
@@ -36,7 +36,7 @@ it.skip('Hover displays occupied effect correctly', () => {
   expect(attrOfSpecificCell('09').some(hasOccupiedEffect)).toBeTruthy();
 });
 
-it.skip('Clicking empty field shows right class and hovering over occupied cell does too', async () => {
+it('Clicking empty field shows right class and hovering over occupied cell does too', async () => {
   const { initHover, initClick } = setup(true);
   await initClick('00');
   initHover('02');
@@ -50,7 +50,7 @@ it.skip('Clicking empty field shows right class and hovering over occupied cell 
   expect(attrOfSpecificCell('05').some(hasShipCellEffect)).toBeFalsy();
 });
 
-it.skip('Clicking on occupied spot doesnt change anything', async () => {
+it('Clicking on occupied spot doesnt change anything', async () => {
   const { initHover, initClick } = setup(true);
   await initClick('00');
   await initClick('03');
@@ -59,7 +59,7 @@ it.skip('Clicking on occupied spot doesnt change anything', async () => {
   expect(attrOfSpecificCell('04').some(hasOccupiedEffect)).toBeTruthy();
 });
 
-it.skip('Check if all ships are placed and no further classes are added', async () => {
+it('Check if all ships are placed and no further classes are added', async () => {
   const { initClick } = setup(true);
   await initClick('00');
   await initClick('04');
@@ -82,7 +82,7 @@ it.skip('Check if all ships are placed and no further classes are added', async 
   }
 });
 
-it.skip('works with vertical alignment', () => {
+it('works with vertical alignment', () => {
   const { initHover } = setup(false);
   initHover('00');
   expect(attrOfSpecificCell('00').some(hasShipCellEffect)).toBeTruthy();

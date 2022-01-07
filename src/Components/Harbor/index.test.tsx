@@ -1,10 +1,12 @@
 import React from 'react';
+import { Router } from 'react-router-dom';
 import Harbor from '.';
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
-import store from '../../store';
+import { store } from '../../store';
+import { createMemoryHistory } from 'history';
 
 type T = {
   nameInput: HTMLElement;
@@ -13,11 +15,14 @@ type T = {
 function setup(isBool: boolean) {
   const toggleMock = jest.fn(function () {});
   const axisRole = isBool ? 'vertical' : 'horizontal';
+  const history = createMemoryHistory();
 
   const utils = render(
-    <Provider store={store}>
-      <Harbor toggleAxis={toggleMock} isHorizontal={isBool} />
-    </Provider>
+    <Router location={history.location} navigator={history}>
+      <Provider store={store}>
+        <Harbor toggleAxis={toggleMock} isHorizontal={isBool} />
+      </Provider>
+    </Router>
   );
   const nameInput = screen.getByLabelText('Enter your name');
 
@@ -40,26 +45,26 @@ function formSetup(setup: T) {
   return { ...utils, getAlertBox, getBtn };
 }
 
-it.skip('Testing, if button is shown with initial value', () => {
+it('Testing, if button is shown with initial value', () => {
   const { axisBtn } = toggleSetup(setup(true), true);
   expect(axisBtn).toBeInTheDocument();
   expect(axisBtn.textContent).toBe('vertical');
 });
 
-it.skip('Testing, if button shows toggled value', () => {
+it('Testing, if button shows toggled value', () => {
   const { axisBtn } = toggleSetup(setup(false), false);
   expect(axisBtn).toBeInTheDocument();
   expect(axisBtn.textContent).toBe('horizontal');
 });
 
-it.skip('Testing if name gets displayed', async () => {
+it('Testing if name gets displayed', async () => {
   const { nameInput } = setup(true);
   expect(nameInput).toBeInTheDocument();
   await userEvent.type(nameInput, 'Mohahemi');
   expect(nameInput).toHaveValue('Mohahemi');
 });
 
-it.skip('Testing error messages displayed correctly', async () => {
+it('Testing error messages displayed correctly', async () => {
   const { getAlertBox, getBtn, nameInput } = formSetup(setup(true));
   expect(getAlertBox).toHaveTextContent('');
   await userEvent.click(getBtn);

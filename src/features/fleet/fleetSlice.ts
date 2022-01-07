@@ -1,11 +1,18 @@
-import { Fleet } from '../../Types/shipTypes';
-
 type T = {
   type: string;
-  payload: Fleet;
+  payload: {
+    [key: string]: number[][];
+  };
 };
 
-export default function fleetSlice(state = {}, action: T) {
+const prevState = {
+  bigShip: [],
+  medShip: [],
+  smallShip: [],
+  tinyShip: [],
+};
+
+export default function fleetSlice(state = prevState, action: T) {
   switch (action.type) {
     case 'fleet/set': {
       return { ...state, ...action.payload };

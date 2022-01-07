@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import '@testing-library/jest-dom';
 import App from './App';
-import store from './store';
+import { store } from './store';
 import { Provider } from 'react-redux';
 import userEvent from '@testing-library/user-event';
 

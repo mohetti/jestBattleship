@@ -3,14 +3,14 @@ import './single-board.css';
 import { Fleet, ShipEnum } from '../../Types/shipTypes';
 import BoardCells from './BoardCells';
 
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks';
 
 type Props = {
   isHorizontal: boolean;
 };
 
 function SingleBoard(props: Props) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [ship, setShip] = useState(4);
   const [isHoverable, setIsHoverable] = useState(true);
   const [occupiedCells, setOccupiedCells] = useState<string[]>([]);
