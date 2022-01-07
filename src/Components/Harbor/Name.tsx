@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { RootState } from '../../reducer';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   transformErrorMsg: (type: string, msg?: string) => void;
@@ -8,6 +9,7 @@ type Props = {
 function Name(props: Props) {
   const [playerName, setPlayerName] = useState('');
   const fleet = useSelector((state: RootState) => state.fleet);
+  let navigate = useNavigate();
 
   const changePlayerName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlayerName(e.target.value);
@@ -36,6 +38,7 @@ function Name(props: Props) {
       type: 'name/change',
       payload: playerName,
     });
+    navigate('/game');
   }
   return (
     <div>
