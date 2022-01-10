@@ -6,7 +6,6 @@ import playerObjectSlice from './features/playerObjects/playerObjectSlice';
 export const rootReducer = combineReducers({
   name: nameSlice,
   fleet: fleetSlice,
-  playerObject: playerObjectSlice,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
